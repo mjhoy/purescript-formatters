@@ -34,6 +34,12 @@ numberTest = describe "Data.Formatter.Number" do
 
   forAll show
     "format (unformat n) = n"
+    [ "1.12", "1.02", "0.10", "0.02"
+    ]
+    (\n →  (format fmt4 <$> (unformat fmt4 n)) `shouldEqual` (Right n))
+
+  forAll show
+    "format (unformat n) = n"
     --TODO negative nubers fail https://github.com/slamdata/purescript-formatters/issues/16
     [-- "-02.12" -- (Right "0-3.88") ≠ (Right "-02.12")
     --, "-13.12" -- (Right "-14.88") ≠ (Right "-13.12")
@@ -65,6 +71,15 @@ fmt3 = Formatter
   , after: 2
   , abbreviations: true
   , sign: true
+  }
+
+fmt4 ∷ Formatter
+fmt4 = Formatter
+  { comma: false
+  , before: 0
+  , after: 2
+  , abbreviations: false
+  , sign: false
   }
 
 numberformatts ∷ Array { fmt ∷ Formatter, str ∷ String }
